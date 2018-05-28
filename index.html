@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>轮播</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <style>
+        .images{
+            display: flex;
+            align-items: flex-start;
+            transition: all 0.5s;
+        }
+        .window{
+            width: 300px;
+            overflow: hidden;
+        }
+        .red{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <div id="images" class="images">
+            <img src="http://www.rensheng2.com/upload/2016/06/28/37c867e1-4f1a-49a0-8ba1-10d80c38fbb2.jpg" alt="图片1" width="300" height="200">
+            <img src="http://i3.sinaimg.cn/dy/o/2010-12-03/1291317339_lwMjAp.jpg" alt="图片2" width="300" height="200">
+            <img src="http://img4.goumin.com//attachments/sale/0/0/12/3174/812602.jpg?1385626070?1385626070" alt="图片3" width="300" height="200">
+            <img src="http://img4.goumin.com//attachments/sale/0/0/14/3773/966016.jpg?1417923791?1417923791" alt="图片4" width="300" height="200">
+        </div>
+    </div>
+    <span id="buttons">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+    </span> 
+</body>
+<script>
+    var allButtons = $('#buttons > span');
+    for(let i = 0; i < allButtons.length;i++){
+        $(allButtons[i]).on('click',function(x){
+            var index = $(x.currentTarget).index()
+            var p = index * -300;
+            $('#images').css({
+                transform : 'translate('+ p + 'px)'
+            })
+            n = index;
+            actvieButton(allButtons.eq(n));
+        })
+    }
+    var n = 0;
+    var size = allButtons.length;
+    playSlide(n % size);
+    var timerId = setTimer();
+
+    $('.window').on('mouseenter',function(){
+        window.clearInterval(timerId);
+    })
+    $('.window').on('mouseleave',function(){
+        timerId = setTimer();
+    })
+    function actvieButton($button){
+        $button.addClass('red')
+         .siblings('.red').removeClass('red');
+    }
+    function playSlide(index){
+        allButtons.eq(index).trigger('click');
+    }
+    function setTimer(){
+        return setInterval(() => {
+            n += 1;
+            playSlide(n % size);
+        },2000)
+    }
+</script>
+</html>
